@@ -72,7 +72,7 @@ hr {
     "black", "black", "black", "black", "black", "black", "black"
   ];
 
-  function getNumber(hash, salt) {
+  function getTileIndex(hash, salt) {
     let seed = hash;
     const hmac = CryptoJS.HmacSHA256(CryptoJS.enc.Hex.parse(seed), salt);
     seed = hmac.toString(CryptoJS.enc.Hex);
@@ -103,9 +103,9 @@ hr {
         );
       }
       const result = chain.map(seed=>{
-        let n = getNumber(seed, clientSeed);
-        let tile = tiles[n];
-        return `<tr><td style="color:${tile}">${tile} ${n}</td><td>${seed}</td></tr>`;
+        let idx = getTileIndex(seed, clientSeed);
+        let tile = tiles[idx];
+        return `<tr><td style="color:${tile}">${tile} ${idx}</td><td>${seed}</td></tr>`;
       });
       if(result.length){
         document.querySelector('#data tbody').innerHTML = result.join('');
@@ -123,7 +123,7 @@ hr {
     if(p[0]==='seed'){
       document.querySelector('#server_seed').value = p[1];
       tryCalculate();
-      return;
+      return true;
     }
   });
   </script>
